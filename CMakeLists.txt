@@ -19,14 +19,15 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+include(FindPkgConfig)
+
+pkg_check_modules(OPENSLIDE IMPORTED_TARGET REQUIRED openslide)
 
 AUX_SOURCE_DIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/src/ DICOMIZER_SOURCES)
 include_directories(wsi2dcmCli PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 include_directories(wsi2dcmCli PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/)
-include_directories(wsi2dcmCli PUBLIC /usr/local/include/opencv4/)
 include_directories(wsi2dcmCli PUBLIC ${TURBOJPEG_INCLUDE_DIRS})
-include_directories(wsi2dcmCli PUBLIC /abseil/install/include/)
-include_directories(wsi2dcmCli PUBLIC /usr/local/include/openslide)
+include_directories(wsi2dcmCli PUBLIC ${OPENSLIDE_INCLUDE_DIRS})
 link_directories(${TURBOJPEG_LIBDIR})
 
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
@@ -47,6 +48,7 @@ FIND_PACKAGE(DCMTK REQUIRED)
 SET(DCMTK_DIR /usr/local/include/dcmtk)
 INCLUDE_DIRECTORIES(${DCMTK_INCLUDE_DIRS})
 find_package(OpenJPEG REQUIRED)
+find_package(absl REQUIRED)
 include_directories(${OPENJPEG_INCLUDE_DIRS})
 
 add_library(wsi2dcm SHARED    
@@ -55,7 +57,6 @@ add_library(wsi2dcm SHARED
     ${JSONCPP_SOURCES}
     ${OpenCV_SOURCES}
     ${TURBOJPEG_SOURCES}
-    /abseil/install/lib
  )
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
