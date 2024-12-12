@@ -24,14 +24,18 @@
 # 9: install jsoncpp
 # 10: build
 
+set -ex
+
 #1
 apt-get update 
 apt-get upgrade -y
-apt-get install -y \
+apt-get install -y --no-install-recommends \
+    ca-certificates \
     apt-utils \
     wget \
     build-essential \
     cmake \
+    g++ \
     unzip \
     libgtest-dev \
     libxml2-dev \

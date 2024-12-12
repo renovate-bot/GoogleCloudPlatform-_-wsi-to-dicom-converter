@@ -85,11 +85,16 @@ Drop first row and column of the source image in order to workaround bug https:/
 
 ## Compiling from source
 
-If you're using Ubuntu, run the following command to download the dependencies and build the tool:
-
+Using docker is the most reliable way to build from source.
 
 ```shell
-sudo ./cloud_build/ubuntuBuild.sh
+docker build .
+```
+
+If you're using Debian 12, run the following command to download the dependencies and build the tool:
+
+```shell
+sudo ./cloud_build/debianBuild.sh
 ```
 
 Otherwise, follow these steps:
