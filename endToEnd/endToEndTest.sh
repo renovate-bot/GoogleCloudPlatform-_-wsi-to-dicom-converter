@@ -110,28 +110,28 @@ python3 ./endToEnd/diff_img.py ./endToEnd/test8GeneratedImage.bmp ./endToEnd/tes
 echo "Test 9"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test9  --levels 6 --tileHeight 100  --tileWidth 100 --progressiveDownsample --jpegCompressionQuality 50
-dcmj2pnm +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test9GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test9GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test9GeneratedImage.bmp ./endToEnd/test9ExpectedImage.bmp
 
 #test - jpg compression quality 95
 echo "Test 10"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test10  --levels 6 --tileHeight 100  --tileWidth 100 --progressiveDownsample --jpegCompressionQuality 95
-dcmj2pnm +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test10GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test10GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test10GeneratedImage.bmp ./endToEnd/test10ExpectedImage.bmp
 
 #test - raw svs frame extraction.
 echo "Test 11"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test11  --levels 6 --tileHeight 100  --tileWidth 100 --progressiveDownsample --jpegCompressionQuality 95 --SVSImportPreferScannerTileingForLargestLevel --opencvDownsampling=CUBIC --stopDownsamplingAtSingleFrame
-dcmj2pnm +obt ./endToEnd/downsample-16-frames-0-1.dcm ./endToEnd/test11GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-16-frames-0-1.dcm ./endToEnd/test11GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test11GeneratedImage.bmp ./endToEnd/test11ExpectedImage.bmp
 
 #test - test create image pyramid from JPEG
 echo "Test 12"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $jpegFileName ./endToEnd/ --seriesDescription test12  --levels 6 --tileHeight 256  --tileWidth 256 --progressiveDownsample --compression=RAW --opencvDownsampling=CUBIC --stopDownsamplingAtSingleFrame --readImage --untiledImageHeightMM 12.0
-dcmj2pnm +obt ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test12GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test12GeneratedImage.bmp
 python3 ./endToEnd/strip_pixel_data.py ./endToEnd/downsample-4-frames-0-1.dcm
 dcm2json ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test12GeneratedTags.json
 compare ./endToEnd/test12GeneratedTags.json ./endToEnd/test12ExpectedTags.json
@@ -141,7 +141,7 @@ python3 ./endToEnd/diff_img.py ./endToEnd/test12GeneratedImage.bmp ./endToEnd/te
 echo "Test 13"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm ./tests/raw.dicom ./endToEnd/ --seriesDescription test13  --levels 6 --tileHeight 256  --tileWidth 256 --progressiveDownsample --compression=RAW --opencvDownsampling=CUBIC --stopDownsamplingAtSingleFrame
-dcmj2pnm +obt ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test13GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test13GeneratedImage.bmp
 python3 ./endToEnd/strip_pixel_data.py ./endToEnd/downsample-4-frames-0-1.dcm
 dcm2json ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test13GeneratedTags.json
 compare ./endToEnd/test13GeneratedTags.json ./endToEnd/test13ExpectedTags.json
@@ -151,7 +151,7 @@ python3 ./endToEnd/diff_img.py ./endToEnd/test13GeneratedImage.bmp ./endToEnd/te
 echo "Test 14"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm ./tests/jpeg.dicom ./endToEnd/ --seriesDescription test14  --levels 6 --tileHeight 256  --tileWidth 256 --progressiveDownsample --compression=RAW --opencvDownsampling=CUBIC --stopDownsamplingAtSingleFrame
-dcmj2pnm +obt ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test14GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test14GeneratedImage.bmp
 python3 ./endToEnd/strip_pixel_data.py ./endToEnd/downsample-4-frames-0-1.dcm
 dcm2json ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test14GeneratedTags.json
 compare ./endToEnd/test14GeneratedTags.json ./endToEnd/test14ExpectedTags.json
@@ -161,7 +161,7 @@ python3 ./endToEnd/diff_img.py ./endToEnd/test14GeneratedImage.bmp ./endToEnd/te
 echo "Test 15"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm ./tests/jpeg2000.dicom ./endToEnd/ --levels 6 --tileHeight 256  --tileWidth 256 --progressiveDownsample --compression=RAW --opencvDownsampling=CUBIC --stopDownsamplingAtSingleFrame
-dcmj2pnm +obt ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test15GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test15GeneratedImage.bmp
 python3 ./endToEnd/strip_pixel_data.py ./endToEnd/downsample-4-frames-0-1.dcm
 dcm2json ./endToEnd/downsample-4-frames-0-1.dcm ./endToEnd/test15GeneratedTags.json
 compare ./endToEnd/test15GeneratedTags.json ./endToEnd/test15ExpectedTags.json
@@ -171,5 +171,5 @@ python3 ./endToEnd/diff_img.py ./endToEnd/test15GeneratedImage.bmp ./endToEnd/te
 echo "Test 16"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test16 --downsamples 1 13 --tileHeight 100  --tileWidth 100 --progressiveDownsample --jpegCompressionQuality 95 --SVSImportPreferScannerTileingForLargestLevel --opencvDownsampling=AREA
-dcmj2pnm +obt ./endToEnd/downsample-13-frames-0-1.dcm ./endToEnd/test16GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-13-frames-0-1.dcm ./endToEnd/test16GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test16GeneratedImage.bmp ./endToEnd/test16ExpectedImage.bmp
