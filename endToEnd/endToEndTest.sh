@@ -39,7 +39,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/local/lib/x86_64-lin
 pip install --break-system-packages pillow numpy pydicom
 #set enviromnental vars for DCMTK
 if [[ -z "${DCMDICTPATH}" ]]; then
-  export DCMDICTPATH=/usr/local/share/dcmtk-3.6.8/dicom.dic
+  export DCMDICTPATH=/usr/local/share/dcmtk-3.6.9/dicom.dic
 fi
 export PATH=/usr/local/bin:$PATH
 
