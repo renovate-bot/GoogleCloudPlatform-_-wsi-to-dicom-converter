@@ -68,42 +68,42 @@ compare ./endToEnd/test2GeneratedTags.json ./endToEnd/test2ExpectedTags.json
 echo "Test 3"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test3  --levels 6 --startOn 5 --tileHeight 100  --tileWidth 100 --compression raw
-dcm2pnm +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test3GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test3GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test3GeneratedImage.bmp ./endToEnd/test3ExpectedImage.bmp
 
 #test - use nearest neighbor downsampling, generate DICOM with dropped first row and column and compare image with expected one
 echo "Test 4"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test4  --levels 6 --startOn 5 --tileHeight 100  --tileWidth 100 --compression raw --dropFirstRowAndColumn
-dcm2pnm +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test4GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test4GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test4GeneratedImage.bmp ./endToEnd/test4ExpectedImage.bmp
 
 #test - use bilinear downsampling to generate DICOM and compare with expected image
 echo "Test 5"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test5  --levels 6 --startOn 5 --tileHeight 100  --tileWidth 100 --compression raw --opencvDownsampling=AREA
-dcm2pnm +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test5GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test5GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test5GeneratedImage.bmp ./endToEnd/test5ExpectedImage.bmp
 
 #test - use bilinear downsampling to generate DICOM with dropped first row and column and compare image with expected one
 echo "Test 6"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test6  --levels 6 --startOn 5 --tileHeight 100  --tileWidth 100 --compression raw --dropFirstRowAndColumn --opencvDownsampling=LANCZOS4
-dcm2pnm +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test6GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test6GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test6GeneratedImage.bmp ./endToEnd/test6ExpectedImage.bmp
 
 #test - use progressiveDowsampling & bilinear downsampling to generate DICOM
 echo "Test 7"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test7  --levels 6 --tileHeight 100  --tileWidth 100 --compression raw --dropFirstRowAndColumn --opencvDownsampling=CUBIC --progressiveDownsample
-dcm2pnm +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test7GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test7GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test7GeneratedImage.bmp ./endToEnd/test7ExpectedImage.bmp
 
 #test - use progressiveDowsampling & nearest neighbor downsampling to generate DICOM
 echo "Test 8"
 rm ./endToEnd/*.dcm -f
 ./build/wsi2dcm $fileName ./endToEnd/ --seriesDescription test8  --levels 6 --tileHeight 100  --tileWidth 100 --compression raw --dropFirstRowAndColumn --progressiveDownsample
-dcm2pnm +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test8GeneratedImage.bmp
+dcm2img +obt ./endToEnd/downsample-32-frames-0-1.dcm ./endToEnd/test8GeneratedImage.bmp
 python3 ./endToEnd/diff_img.py ./endToEnd/test8GeneratedImage.bmp ./endToEnd/test8ExpectedImage.bmp
 
 #test - jpg compression quality 50
