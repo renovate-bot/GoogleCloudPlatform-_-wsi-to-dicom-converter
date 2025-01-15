@@ -78,10 +78,10 @@ inline OFCondition generateFramePositionMetadata(DcmDataset* resultObject,
   return resultObject->insert(PerFrameFunctionalGroupsSequence.release());
 }
 
-std:string _clip_double_16(double val) {
+std::string _clip_double_16(const double val) {
   // Clip double string representation at 16 characters to ensure
   // conformance with DICOM DS vr code.
-  std:string val_str = std::to_string(val);
+  std::string val_str = std::to_string(val);
   if (val_str.length() > 16) {
     val_str.resize(16);
   }
