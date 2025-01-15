@@ -100,7 +100,7 @@ unzip dcmtk-3.6.9.zip > /dev/null
 rm dcmtk-3.6.9.zip
 mkdir -p ./dcmtk-DCMTK-3.6.9/build
 cd ./dcmtk-DCMTK-3.6.9/build
-cmake -DDCMTK_FORCE_FPIC_ON_UNIX:BOOL=TRUE -DDCMTK_ENABLE_CXX11:BOOL=TRUE -DDCMTK_ENABLE_CHARSET_CONVERSION:BOOL=FALSE -DBUILD_SHARED_LIBS:BOOL=ON -DDCMTK_MODULES:STRING="oficonv;ofstd;oflog;dcmdata;dcmimgle;dcmimage;dcmjpeg" ..
+cmake -DDCMTK_FORCE_FPIC_ON_UNIX:BOOL=TRUE -DDCMTK_ENABLE_CXX11:BOOL=TRUE -DDCMTK_ENABLE_CHARSET_CONVERSION:BOOL=FALSE -DBUILD_SHARED_LIBS:BOOL=ON -DDCMTK_MODULES:STRING="oficonv;ofstd;oflog;dcmdata;dcmimgle;dcmimage;dcmjpeg;dcmjpls;dcmapps" ..
 make -j12
 make DESTDIR=/ install
 cd ..
