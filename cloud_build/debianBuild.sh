@@ -147,5 +147,7 @@ cp /usr/lib/x86_64-linux-gnu/glib-2.0/include/glibconfig.h /usr/include/glib-2.0
 mkdir build
 cd build
 cmake -DSTATIC_BUILD=ON -DTESTS_BUILD=ON ..
+set -e
 make -j12
 ./gTests
+set +e
