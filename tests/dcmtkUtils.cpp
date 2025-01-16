@@ -20,6 +20,7 @@
 #include <string>
 #include "tests/testUtils.h"
 
+
 TEST(insertBaseImageTagsTest, correctInsert) {
   std::unique_ptr<DcmDataset> dataSet = std::make_unique<DcmDataset>();
 
