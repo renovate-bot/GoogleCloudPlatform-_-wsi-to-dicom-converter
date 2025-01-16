@@ -20,6 +20,45 @@
 #include <string>
 #include "tests/testUtils.h"
 
+TEST(insertPixelMeasures, clippedPixelSpacing) {
+  std::unique_ptr<DcmDataset> dataSet = std::make_unique<DcmDataset>();
+  wsiToDicomConverter::DcmtkUtils::generateSharedFunctionalGroupsSequence(
+    dataSet.get(), 0.1234560123456789, 12.34560123456789);
+  DcmSequenceOfItems* element = reinterpret_cast<DcmSequenceOfItems*>(
+    findElement(dataSet.get(), DCM_SharedFunctionalGroupsSequence));
+  element = reinterpret_cast<DcmSequenceOfItems*>(
+    findElement(element->getItem(0), DCM_PixelMeasuresSequence));
+  char* stringValue;
+  findElement(element->getItem(0), DCM_PixelSpacing)->getString(stringValue);
+  ASSERT_EQ("0.12345601234567\\12.3456012345678", stringValue);
+}
+
+TEST(insertPixelMeasures, unclippedPixelSpacingExact) {
+  std::unique_ptr<DcmDataset> dataSet = std::make_unique<DcmDataset>();
+  wsiToDicomConverter::DcmtkUtils::generateSharedFunctionalGroupsSequence(
+    dataSet.get(), 0.12345601234567, 12.3456012345678);
+  DcmSequenceOfItems* element = reinterpret_cast<DcmSequenceOfItems*>(
+    findElement(dataSet.get(), DCM_SharedFunctionalGroupsSequence));
+  element = reinterpret_cast<DcmSequenceOfItems*>(
+    findElement(element->getItem(0), DCM_PixelMeasuresSequence));
+  char* stringValue;
+  findElement(element->getItem(0), DCM_PixelSpacing)->getString(stringValue);
+  ASSERT_EQ("0.12345601234567\\12.3456012345678", stringValue);
+}
+
+TEST(insertPixelMeasures, unclippedPixelSpacingShorter) {
+  std::unique_ptr<DcmDataset> dataSet = std::make_unique<DcmDataset>();
+  wsiToDicomConverter::DcmtkUtils::generateSharedFunctionalGroupsSequence(
+    dataSet.get(), 0.12345, 12.34);
+  DcmSequenceOfItems* element = reinterpret_cast<DcmSequenceOfItems*>(
+    findElement(dataSet.get(), DCM_SharedFunctionalGroupsSequence));
+  element = reinterpret_cast<DcmSequenceOfItems*>(
+    findElement(element->getItem(0), DCM_PixelMeasuresSequence));
+  char* stringValue;
+  findElement(element->getItem(0), DCM_PixelSpacing)->getString(stringValue);
+  ASSERT_EQ("0.12345\\12.34", stringValue);
+}
+
 TEST(insertBaseImageTagsTest, correctInsert) {
   std::unique_ptr<DcmDataset> dataSet = std::make_unique<DcmDataset>();
 
