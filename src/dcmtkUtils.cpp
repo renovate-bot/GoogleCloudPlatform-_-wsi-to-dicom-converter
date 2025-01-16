@@ -78,16 +78,6 @@ inline OFCondition generateFramePositionMetadata(DcmDataset* resultObject,
   return resultObject->insert(PerFrameFunctionalGroupsSequence.release());
 }
 
-std::string _clip_double_16(const double val) {
-  // Clip double string representation at 16 characters to ensure
-  // conformance with DICOM DS vr code.
-  std::string val_str = std::to_string(val);
-  if (val_str.length() > 16) {
-    val_str.resize(16);
-  }
-  return val_str;
-}
-
 inline OFCondition generateSharedFunctionalGroupsSequence(
     DcmDataset* resultObject, double pixelSizeWidthMm,
     double pixelSizeHeightMm) {
@@ -100,8 +90,8 @@ inline OFCondition generateSharedFunctionalGroupsSequence(
   std::unique_ptr<DcmItem> sharedFunctionalGroupsSequence =
       std::make_unique<DcmItem>();
   std::unique_ptr<DcmItem> pixelMeasuresSequence = std::make_unique<DcmItem>();
-  std::string pixelSizeMmStr = _clip_double_16(pixelSizeHeightMm) + "\\" +
-                               _clip_double_16(pixelSizeWidthMm);
+  std::string pixelSizeMmStr = std::to_string(pixelSizeHeightMm) + "\\" +
+                               std::to_string(pixelSizeWidthMm);
 
   pixelMeasuresSequence->putAndInsertString(DCM_PixelSpacing,
                                             pixelSizeMmStr.c_str());
