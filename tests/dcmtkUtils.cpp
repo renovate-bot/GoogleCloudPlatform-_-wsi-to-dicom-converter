@@ -59,7 +59,6 @@ TEST(insertPixelMeasures, unclippedPixelSpacingShorter) {
   ASSERT_EQ("0.12345\\12.34", stringValue);
 }
 
-
 TEST(insertBaseImageTagsTest, correctInsert) {
   std::unique_ptr<DcmDataset> dataSet = std::make_unique<DcmDataset>();
 
