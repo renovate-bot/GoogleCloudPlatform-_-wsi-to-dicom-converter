@@ -19,8 +19,8 @@
 namespace jpegUtil {
 
 bool canDecodeJpeg(const int64_t width, const int64_t height,
-                   const J_COLOR_SPACE colorSpace,
-                   const uint8_t* rawBuffer, const uint64_t rawBufferSize);
+const J_COLOR_SPACE colorSpace, const uint8_t* rawBuffer,
+const uint64_t rawBufferSize);
 
 /* Decodes compressed jpeg image of known size and
    Prameters:
@@ -35,13 +35,10 @@ bool canDecodeJpeg(const int64_t width, const int64_t height,
 
   Returns: true if image decoded successfully.
 */
-bool decodeJpeg(const int64_t width,
-                const int64_t height,
-                const J_COLOR_SPACE colorSpace,
-                const uint8_t* rawBuffer,
-                const uint64_t rawBufferSize,
-                uint8_t *returnMemoryBuffer,
-                const int64_t returnMemoryBufferSize);
+bool decodeJpeg(const int64_t width, const int64_t height,
+const J_COLOR_SPACE colorSpace, const uint8_t* rawBuffer,
+const uint64_t rawBufferSize, uint8_t *returnMemoryBuffer,
+const int64_t returnMemoryBufferSize);
 
 }  // namespace jpegUtil
 
