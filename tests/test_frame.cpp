@@ -11,24 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include <boost/log/trivial.hpp>
-
 #include <cstring>
 #include <memory>
+#include <string>
 #include <utility>
 
+#include <boost/log/trivial.hpp>
 #include "tests/test_frame.h"
+
 
 namespace wsiToDicomConverter {
 
 TestFrame::TestFrame(int64_t width, int64_t height) : Frame(0,
-                                                            0,
-                                                            width,
-                                                            height,
-                                                            RAW,
-                                                            100,
-                                                            subsample_420,
-                                                            true) {
+0, width, height, RAW, 100, subsample_420, true) {
   rawValue_ = NULL;
   done_ = true;
   data_  = NULL;
@@ -44,13 +39,7 @@ TestFrame::TestFrame(int64_t width, int64_t height) : Frame(0,
 }
 
 TestFrame::TestFrame(int64_t width, int64_t height, uint32_t value) : Frame(0,
-                                                                            0,
-                                                                        width,
-                                                                       height,
-                                                                          RAW,
-                                                                          100,
-                                                                subsample_420,
-                                                                        true) {
+0, width, height, RAW, 100, subsample_420, true) {
   done_ = true;
   data_  = NULL;
   size_ = 0;
@@ -70,7 +59,7 @@ void TestFrame::incSourceFrameReadCounter() {
 void TestFrame::sliceFrame() {}
 
 int64_t TestFrame::rawABGRFrameBytes(uint8_t *rawMemory,
-                                       int64_t memorySize) {
+int64_t memorySize) {
   const int64_t expectedMemsize = frameWidth_ *
                                   frameHeight_ *
                                   sizeof(uint32_t);
