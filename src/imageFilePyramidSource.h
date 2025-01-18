@@ -14,13 +14,14 @@
 
 #ifndef SRC_IMAGEFILEPYRAMIDSOURCE_H_
 #define SRC_IMAGEFILEPYRAMIDSOURCE_H_
-
 #include <absl/strings/string_view.h>
 #include <jpeglib.h>
-#include <opencv2/opencv.hpp>
-#include <string>
+
 #include <memory>
+#include <string>
 #include <vector>
+
+#include <opencv2/opencv.hpp>
 #include "src/baseFilePyramidSource.h"
 
 namespace wsiToDicomConverter {
