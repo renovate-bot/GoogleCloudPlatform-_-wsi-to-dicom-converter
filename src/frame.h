@@ -15,12 +15,12 @@
 #ifndef SRC_FRAME_H_
 #define SRC_FRAME_H_
 #include <absl/strings/string_view.h>
-#include <boost/thread/mutex.hpp>
 #include <dcmtk/dcmdata/dcpxitem.h>
 
 #include <string>
 #include <memory>
 
+#include <boost/thread/mutex.hpp>
 #include "src/enums.h"
 #include "src/compressor.h"
 #include "src/jpegCompression.h"
