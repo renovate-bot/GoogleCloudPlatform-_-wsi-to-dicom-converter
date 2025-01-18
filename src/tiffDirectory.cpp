@@ -11,12 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include <boost/log/trivial.hpp>
-
 #include <cmath>
 #include <memory>
 #include <string>
 
+#include <boost/log/trivial.hpp>
 #include "src/tiffDirectory.h"
 
 namespace wsiToDicomConverter {
@@ -252,7 +251,7 @@ bool TiffDirectory::isExtractablePyramidImage() const {
 }
 
 bool TiffDirectory::doImageDimensionsMatch(int64_t width,
-                                           int64_t height) const {
+int64_t height) const {
   return (imageWidth_ == width && imageHeight_ == height);
 }
 
@@ -263,7 +262,7 @@ bool TiffDirectory::isSet(double val) const { return val != -1.0; }
 bool TiffDirectory::isSet(std::string val) const { return val != ""; }
 
 void TiffDirectory::_getTiffField_ui32(TIFF *tiff, ttag_t tag,
-                                                   int64_t *val) const {
+int64_t *val) const {
   uint32_t normalint = 0;
   if (1 == TIFFGetField(tiff, tag, &normalint)) {
       *val = static_cast<int64_t>(normalint);
@@ -273,7 +272,7 @@ void TiffDirectory::_getTiffField_ui32(TIFF *tiff, ttag_t tag,
 }
 
 void TiffDirectory::_getTiffField_ui16(TIFF *tiff, ttag_t tag,
-                                                   int64_t *val) const {
+int64_t *val) const {
   uint16_t normalint = 0;
   if (1 == TIFFGetField(tiff, tag, &normalint)) {
       *val = static_cast<int64_t>(normalint);
@@ -283,7 +282,7 @@ void TiffDirectory::_getTiffField_ui16(TIFF *tiff, ttag_t tag,
 }
 
 void TiffDirectory::_getTiffField_f(TIFF *tiff, ttag_t tag,
-                                                double *val) const {
+double *val) const {
   float flt;
   if (1 == TIFFGetField(tiff, tag, &flt)) {
       *val = static_cast<double>(flt);
@@ -293,7 +292,7 @@ void TiffDirectory::_getTiffField_f(TIFF *tiff, ttag_t tag,
 }
 
 void TiffDirectory::_getTiffField_str(TIFF *tiff, ttag_t tag,
-                                      std::string *val) const {
+std::string *val) const {
   char *str;
   int result = TIFFGetField(tiff, tag, &str);
   if (result == 1) {
@@ -304,8 +303,7 @@ void TiffDirectory::_getTiffField_str(TIFF *tiff, ttag_t tag,
 }
 
 void TiffDirectory::_getTiffField_jpegTables(TIFF *tiff,
-                                             int64_t* jpegTableDataSize,
-                            std::unique_ptr<uint8_t[]> *jpegTableData) const {
+int64_t* jpegTableDataSize, std::unique_ptr<uint8_t[]> *jpegTableData) const {
   uint16_t size = 0;
   void *tableData;
   *jpegTableDataSize = -1;
