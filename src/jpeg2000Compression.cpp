@@ -11,13 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#include "src/jpeg2000Compression.h"
 #include <openjpeg.h>
+
+#include<algorithm>
+#include <memory>
+#include <string>
+
 #include <boost/gil/image.hpp>
 #include <boost/log/trivial.hpp>
-#include<algorithm>
-#include <string>
+#include "src/jpeg2000Compression.h"
+
 
 Jpeg2000Compression::~Jpeg2000Compression() {}
 
