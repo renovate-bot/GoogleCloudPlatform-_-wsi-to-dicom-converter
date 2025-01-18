@@ -18,7 +18,6 @@
 #include <dcmtk/dcmdata/dcuid.h>
 #include <dcmtk/ofstd/ofvector.h>
 #include <gtest/gtest.h>
-#include <boost/filesystem.hpp>
 #include <absl/strings/string_view.h>
 
 #include <memory>
@@ -26,6 +25,7 @@
 #include <vector>
 #include <string>
 
+#include <boost/filesystem.hpp>
 #include "src/dcmFileDraft.h"
 #include "src/frame.h"
 #include "tests/test_frame.h"
