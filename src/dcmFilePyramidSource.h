@@ -16,13 +16,15 @@
 #define SRC_DCMFILEPYRAMIDSOURCE_H_
 
 #include <absl/strings/string_view.h>
-#include <boost/thread/mutex.hpp>
 #include <dcmtk/dcmdata/dcfilefo.h>
 #include <dcmtk/dcmdata/dcpixseq.h>
 #include <jpeglib.h>
+
 #include <string>
 #include <memory>
 #include <vector>
+
+#include <boost/thread/mutex.hpp>
 #include "src/baseFilePyramidSource.h"
 
 namespace wsiToDicomConverter {
