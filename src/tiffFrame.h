@@ -27,7 +27,7 @@
 namespace wsiToDicomConverter {
 
 uint64_t frameIndexFromLocation(const TiffFile *tiffFile, const uint64_t level,
-                                const int64_t xLoc, const int64_t yLoc);
+const int64_t xLoc, const int64_t yLoc);
 
 // TiffFrame represents a image extracted without decompression
 // from a SVS or Tiff file. Enables Tiff files composed of Lossy
