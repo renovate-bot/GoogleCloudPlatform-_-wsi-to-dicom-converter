@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "src/wsiToDcm.h"
 #include <absl/strings/string_view.h>
 #include <dcmtk/dcmdata/dcfilefo.h>
 #include <dcmtk/dcmdata/dcistrmb.h>
@@ -22,13 +21,17 @@
 #include <dcmtk/dcmdata/dcvrat.h>
 #include <dcmtk/ofstd/ofvector.h>
 #include <gtest/gtest.h>
-#include <boost/filesystem.hpp>
 #include <math.h>
+
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include <boost/filesystem.hpp>
+#include "src/wsiToDcm.h"
 #include "tests/testUtils.h"
+
 
 TEST(readTiff, simple) {
   std::vector<int>  downsamples;
