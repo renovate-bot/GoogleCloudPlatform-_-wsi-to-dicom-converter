@@ -30,8 +30,7 @@ namespace wsiToDicomConverter {
     compressed memory. 
 */
 std::unique_ptr<uint8_t[]> compress_memory(uint8_t *raw_bytes,
-                                           const int64_t frame_mem_size_bytes,
-                                           int64_t *raw_compressed_bytes_size);
+const int64_t frame_mem_size_bytes, int64_t *raw_compressed_bytes_size);
 
 /* ZLib decompresses memory.
 
@@ -45,9 +44,8 @@ std::unique_ptr<uint8_t[]> compress_memory(uint8_t *raw_bytes,
     Actual size in bytes of data uncompressed.
 */
 int64_t decompress_memory(uint8_t *compressed_bytes,
-                          int64_t compressed_bytes_size,
-                          uint8_t* raw_memory,
-                          int64_t raw_memory_size_bytes);
+int64_t compressed_bytes_size, uint8_t* raw_memory,
+int64_t raw_memory_size_bytes);
 
 }  // namespace wsiToDicomConverter
 
