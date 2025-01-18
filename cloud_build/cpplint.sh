@@ -19,7 +19,8 @@ checkFolder () {
     exit 1;
   fi
 }
-
+apt-get update
+apt-get install -y wget
 wget https://raw.githubusercontent.com/cpplint/cpplint/refs/heads/develop/cpplint.py
 
 checkFolder ./src
