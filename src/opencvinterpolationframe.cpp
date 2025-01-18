@@ -14,15 +14,15 @@
 
 #include <dcmtk/dcmdata/libi2d/i2dimgs.h>
 
+#include <algorithm>
+#include <memory>
+#include <utility>
+
 #include <boost/gil/extension/numeric/affine.hpp>
 #include <boost/gil/extension/numeric/resample.hpp>
 #include <boost/gil/extension/numeric/sampler.hpp>
 #include <boost/gil/typedefs.hpp>
 #include <boost/log/trivial.hpp>
-
-#include <algorithm>
-#include <utility>
-
 #include "src/jpegCompression.h"
 #include "src/opencvinterpolationframe.h"
 #include "src/rawCompression.h"
@@ -31,19 +31,15 @@
 namespace wsiToDicomConverter {
 
 OpenCVInterpolationFrame::OpenCVInterpolationFrame(
-    OpenSlidePtr *osptr, int64_t locationX, int64_t locationY, int32_t level,
-    int64_t frameWidthDownsampled, int64_t frameHeightDownsampled,
-    int64_t frameWidth, int64_t frameHeight, DCM_Compression compression,
-    int quality,  JpegSubsampling subsampling, int64_t levelWidth,
-    int64_t levelHeight, int64_t level0Width, int64_t level0Height,
-    bool storeRawBytes, DICOMFileFrameRegionReader *frame_region_reader,
-    const cv::InterpolationFlags openCVInterpolationMethod) : Frame(locationX,
-                                                                locationY,
-                                                                frameWidth,
-                                                               frameHeight,
-                                                      compression, quality,
-                                                           subsampling,
-                                                           storeRawBytes) {
+OpenSlidePtr *osptr, int64_t locationX, int64_t locationY, int32_t level,
+int64_t frameWidthDownsampled, int64_t frameHeightDownsampled,
+int64_t frameWidth, int64_t frameHeight, DCM_Compression compression,
+int quality,  JpegSubsampling subsampling, int64_t levelWidth,
+int64_t levelHeight, int64_t level0Width, int64_t level0Height,
+bool storeRawBytes, DICOMFileFrameRegionReader *frame_region_reader,
+const cv::InterpolationFlags openCVInterpolationMethod) : Frame(locationX,
+locationY, frameWidth, frameHeight, compression, quality, subsampling,
+storeRawBytes) {
   osptr_ = osptr;
   level_ = level;
   frameWidthDownsampled_ = frameWidthDownsampled;
@@ -103,7 +99,7 @@ OpenCVInterpolationFrame::OpenCVInterpolationFrame(
 OpenCVInterpolationFrame::~OpenCVInterpolationFrame() {}
 
 void OpenCVInterpolationFrame::scalefactorNormPadding(int *padding,
-                                                      int scalefactor) {
+int scalefactor) {
   if (*padding <= 0) {
     return;
   }
