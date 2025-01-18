@@ -14,10 +14,12 @@
 
 #ifndef SRC_COMPRESSOR_H_
 #define SRC_COMPRESSOR_H_
-#include <boost/gil/typedefs.hpp>
+
 #include <cstdint>
 #include <memory>
 #include <string>
+
+#include <boost/gil/typedefs.hpp>
 
 // Interface for different type of compressions
 class Compressor {
