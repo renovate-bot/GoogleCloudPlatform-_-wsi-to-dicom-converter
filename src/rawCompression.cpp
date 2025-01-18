@@ -11,13 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#include "src/rawCompression.h"
-#include <boost/gil/image.hpp>
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include <boost/gil/image.hpp>
+#include "src/rawCompression.h"
 
 struct PixelInserter {
   std::vector<uint8_t> *storage;
