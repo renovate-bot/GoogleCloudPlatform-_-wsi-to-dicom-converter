@@ -12,14 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "src/dcmTags.h"
 #include <dcmtk/dcmdata/dcitem.h>
 #include <dcmtk/dcmdata/dctag.h>
 #include <dcmtk/dcmdata/dcvrat.h>
 #include <json/json.h>
-#include <boost/log/trivial.hpp>
+
 #include <memory>
 #include <string>
+
+#include <boost/log/trivial.hpp>
+#include "src/dcmTags.h"
+
+
 static const char VALUE[] = "Value";
 
 DcmTags::DcmTags() {}
