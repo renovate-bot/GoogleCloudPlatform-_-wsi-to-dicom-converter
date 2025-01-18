@@ -15,11 +15,11 @@
 #ifndef SRC_OPENCVINTERPOLATIONFRAME_H_
 #define SRC_OPENCVINTERPOLATIONFRAME_H_
 #include <stdlib.h>
-#include <opencv2/opencv.hpp>
 
 #include <memory>
 #include <vector>
 
+#include <opencv2/opencv.hpp>
 #include "src/dicom_file_region_reader.h"
 #include "src/compressor.h"
 #include "src/frame.h"
