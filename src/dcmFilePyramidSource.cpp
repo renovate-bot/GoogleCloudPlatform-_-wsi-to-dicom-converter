@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include "src/dcmFilePyramidSource.h"
 #include <dcmtk/dcmdata/dcdeftag.h>
 #include <dcmtk/dcmdata/dcfilefo.h>
 #include <dcmtk/dcmdata/dcpixel.h>
@@ -21,21 +20,23 @@
 #include <dcmtk/dcmimage/diregist.h>
 #include <dcmtk/dcmimgle/diutils.h>
 #include <dcmtk/dcmimgle/dcmimage.h>
-#include <boost/log/trivial.hpp>
-#include <boost/thread.hpp>
-#include <opencv2/opencv.hpp>
+
 #include <string>
 #include <memory>
 #include <utility>
+
+#include <boost/log/trivial.hpp>
+#include <boost/thread.hpp>
+#include <opencv2/opencv.hpp>
+#include "src/dcmFilePyramidSource.h"
 #include "src/jpegUtil.h"
+
 
 namespace wsiToDicomConverter {
 
 AbstractDicomFileFrame::AbstractDicomFileFrame(
-                               int64_t locationX,
-                               int64_t locationY,
-                               DcmFilePyramidSource* pyramidSource) :
-                            BaseFileFrame(locationX, locationY, pyramidSource) {
+int64_t locationX, int64_t locationY, DcmFilePyramidSource* pyramidSource) :
+BaseFileFrame(locationX, locationY, pyramidSource) {
 }
 
 void AbstractDicomFileFrame::debugLog() const {
@@ -62,17 +63,14 @@ boost::mutex* DICOMDatasetReader::datasetMutex() {
 }
 
 DICOMImageFrame::DICOMImageFrame(int64_t frameNumber,
-                                 int64_t locationX,
-                                 int64_t locationY,
-                                 uint64_t dicomMemSize,
-                                 DcmFilePyramidSource *pyramidSource) :
-                  AbstractDicomFileFrame(locationX, locationY, pyramidSource),
-                  frameNumber_(frameNumber) {
+int64_t locationX, int64_t locationY, uint64_t dicomMemSize,
+DcmFilePyramidSource *pyramidSource): AbstractDicomFileFrame(locationX,
+locationY, pyramidSource), frameNumber_(frameNumber) {
   size_ = dicomMemSize;
 }
 
 int64_t DICOMImageFrame::rawABGRFrameBytes(uint8_t *rawMemory,
-                                          int64_t memorySize) {
+int64_t memorySize) {
   // DICOM frame data in native format is jpeg encoded.
   // uncompress and return # of bytes read.
   // return 0 if error occures.
@@ -101,12 +99,9 @@ int64_t DICOMImageFrame::rawABGRFrameBytes(uint8_t *rawMemory,
 }
 
 JpegDicomFileFrame::JpegDicomFileFrame(int64_t locationX,
-                                       int64_t locationY,
-                                       uint8_t *dicomMem,
-                                       uint64_t dicomMemSize,
-                                       DcmFilePyramidSource *pyramidSource) :
-                  AbstractDicomFileFrame(locationX, locationY, pyramidSource),
-                  dicomFrameMemory_(dicomMem) {
+int64_t locationY, uint8_t *dicomMem, uint64_t dicomMemSize,
+DcmFilePyramidSource *pyramidSource): AbstractDicomFileFrame(locationX,
+locationY, pyramidSource), dicomFrameMemory_(dicomMem) {
   size_ = dicomMemSize;
 }
 
@@ -115,7 +110,7 @@ J_COLOR_SPACE JpegDicomFileFrame::jpegDecodeColorSpace() const {
 }
 
 int64_t JpegDicomFileFrame::rawABGRFrameBytes(uint8_t *rawMemory,
-                                          int64_t memorySize) {
+int64_t memorySize) {
   const uint64_t width = frameWidth();
   const uint64_t height = frameHeight();
   if (jpegUtil::decodeJpeg(width, height, jpegDecodeColorSpace(),
@@ -127,17 +122,14 @@ int64_t JpegDicomFileFrame::rawABGRFrameBytes(uint8_t *rawMemory,
 }
 
 Jp2KDicomFileFrame::Jp2KDicomFileFrame(int64_t locationX,
-                                       int64_t locationY,
-                                       uint8_t *dicomMem,
-                                       uint64_t dicomMemSize,
-                                       DcmFilePyramidSource *pyramidSource) :
-                   AbstractDicomFileFrame(locationX, locationY, pyramidSource),
-                   dicomFrameMemory_(dicomMem) {
+int64_t locationY, uint8_t *dicomMem, uint64_t dicomMemSize,
+DcmFilePyramidSource *pyramidSource): AbstractDicomFileFrame(locationX,
+locationY, pyramidSource), dicomFrameMemory_(dicomMem) {
   size_ = dicomMemSize;
 }
 
 int64_t Jp2KDicomFileFrame::rawABGRFrameBytes(uint8_t *rawMemory,
-                                              int64_t memorySize) {
+int64_t memorySize) {
   cv::Mat rawData(1, size_, CV_8UC1,
                   reinterpret_cast<void*>(dicomFrameMemory_));
   cv::Mat decodedImage = cv::imdecode(rawData, cv::IMREAD_COLOR);
@@ -152,8 +144,7 @@ int64_t Jp2KDicomFileFrame::rawABGRFrameBytes(uint8_t *rawMemory,
 }
 
 DcmFilePyramidSource::DcmFilePyramidSource(absl::string_view filePath,
-                                           bool loadframes) :
-                      BaseFilePyramidSource<AbstractDicomFileFrame>(filePath) {
+bool loadframes): BaseFilePyramidSource<AbstractDicomFileFrame>(filePath) {
   errorMsg_ = "";
   xfer_ = EXS_Unknown;
   dcmtkCodecRegistered_ = false;
@@ -462,7 +453,7 @@ std::string DcmFilePyramidSource::getTagValueString(const DcmTagKey &dcmTag) {
 }
 
 std::string DcmFilePyramidSource::getTagValueStringArray(
-                                                     const DcmTagKey &dcmTag) {
+const DcmTagKey &dcmTag) {
   OFString value;
   if (dcmFile_.getDataset()->findAndGetOFStringArray(dcmTag, value,
                                        OFFalse /*searchIntoSub*/).good()) {
@@ -513,6 +504,6 @@ void DcmFilePyramidSource::debugLog() const {
                              "Frame Dim: " << frameWidth() << ", " <<
                              frameHeight() <<  "\n"  << "Transfer Syntax: " <<
                              transferSyntax();
-  }
+}
 
 }  // namespace wsiToDicomConverter
