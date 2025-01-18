@@ -14,6 +14,7 @@
 #include <gtest/gtest.h>
 #include <jpeglib.h>
 
+#include <cstdio>
 #include <memory>
 #include <utility>
 
