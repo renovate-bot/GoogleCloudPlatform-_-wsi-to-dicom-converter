@@ -433,7 +433,7 @@ absl::string_view imageName, std::unique_ptr<DcmPixelData> pixelData,
 const DcmtkImgDataInfo& imgInfo, uint32_t numberOfFrames, uint32_t row,
 uint32_t column, const int32_t instanceNumber, const int32_t downsample,
 int batchNumber, uint32_t offset, uint32_t totalNumberOfFrames, bool tiled,
- DcmOutputStream* outStream) {
+DcmOutputStream* outStream) {
   return startConversion(imageHeight, imageWidth, rowSize, studyId, seriesId,
                          imageName, std::move(pixelData), imgInfo,
                          numberOfFrames, row, column, instanceNumber,
