@@ -13,14 +13,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#include "src/jpegCompression.h"
-#include <boost/bind/bind.hpp>
-#include <boost/gil/extension/io/jpeg/old.hpp>
 #include <algorithm>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
+
+#include <boost/bind/bind.hpp>
+#include <boost/gil/extension/io/jpeg/old.hpp>
+#include "src/jpegCompression.h"
+
 
 JpegCompression::JpegCompression(int quality,
                                  const JpegSubsampling subsampling) {
