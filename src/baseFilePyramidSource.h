@@ -15,9 +15,11 @@
 #ifndef SRC_BASEFILEPYRAMIDSOURCE_H_
 #define SRC_BASEFILEPYRAMIDSOURCE_H_
 #include <absl/strings/string_view.h>
+
 #include <memory>
 #include <string>
 #include <vector>
+
 #include "src/abstractDcmFile.h"
 #include "src/frame.h"
 
@@ -73,11 +75,9 @@ class BaseFilePyramidSource : public AbstractDcmFile {
 
 template<class T>
 BaseFileFrame<T>::BaseFileFrame(int64_t locationX,
-                               int64_t locationY,
-                               T* pyramidSource) :
-         Frame(locationX, locationY, pyramidSource->frameWidth(),
-               pyramidSource->frameHeight(), NONE, -1, subsample_420,
-               true) {
+int64_t locationY, T* pyramidSource): Frame(locationX, locationY,
+pyramidSource->frameWidth(), pyramidSource->frameHeight(), NONE, -1,
+subsample_420, true) {
   size_ = 0;
   dcmPixelItem_ = nullptr;
   rawCompressedBytes_ = nullptr;
@@ -108,12 +108,12 @@ void BaseFileFrame<T>::incSourceFrameReadCounter() {
 
 template<class T>
 void BaseFileFrame<T>::setDicomFrameBytes(std::unique_ptr<uint8_t[]> dcmdata,
-                                        uint64_t size) {
+uint64_t size) {
 }
 
 template<class T>
 BaseFilePyramidSource<T>::BaseFilePyramidSource(absl::string_view filePath) :
-                                filename_(static_cast<std::string>(filePath)) {
+filename_(static_cast<std::string>(filePath)) {
   frameWidth_ = 0;
   frameHeight_ = 0;
   imageWidth_ = 0;
