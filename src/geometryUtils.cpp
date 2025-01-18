@@ -19,10 +19,10 @@
 namespace wsiToDicomConverter {
 
 void dimensionDownsampling(
-  int64_t frameWidth, int64_t frameHeight, int64_t sourceLevelWidth,
-  int64_t sourceLevelHeight, bool retile, double downsampleOfLevel,
-  int64_t *downsampledLevelWidth, int64_t *downsampledLevelHeight,
-  int64_t *downsampledLevelFrameWidth, int64_t *downsampledLevelFrameHeight) {
+int64_t frameWidth, int64_t frameHeight, int64_t sourceLevelWidth,
+int64_t sourceLevelHeight, bool retile, double downsampleOfLevel,
+int64_t *downsampledLevelWidth, int64_t *downsampledLevelHeight,
+int64_t *downsampledLevelFrameWidth, int64_t *downsampledLevelFrameHeight) {
   *downsampledLevelWidth = sourceLevelWidth;
   *downsampledLevelHeight = sourceLevelHeight;
   if (retile) {
