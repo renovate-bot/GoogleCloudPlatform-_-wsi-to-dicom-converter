@@ -11,25 +11,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include "src/imageFilePyramidSource.h"
-#include <boost/log/trivial.hpp>
-#include <opencv2/opencv.hpp>
 #include <algorithm>
 #include <string>
 #include <memory>
 #include <utility>
+
+#include <boost/log/trivial.hpp>
+#include <opencv2/opencv.hpp>
+#include "src/imageFilePyramidSource.h"
 #include "src/zlibWrapper.h"
 
 namespace wsiToDicomConverter {
 
-ImageFileFrame::ImageFileFrame(int64_t locationX,
-                               int64_t locationY,
-                               ImageFilePyramidSource* pyramidSource) :
-                            BaseFileFrame(locationX, locationY, pyramidSource) {
+ImageFileFrame::ImageFileFrame(int64_t locationX, int64_t locationY,
+ImageFilePyramidSource* pyramidSource): BaseFileFrame(locationX, locationY,
+pyramidSource) {
 }
 
 int64_t ImageFileFrame::rawABGRFrameBytes(uint8_t *rawMemory,
-                                          int64_t memorySize) {
+int64_t memorySize) {
   const uint64_t locX = locationX();
   const uint64_t locY = locationY();
   const uint64_t fWidth = frameWidth();
@@ -66,10 +66,8 @@ std::string ImageFileFrame::derivationDescription() const {
 }
 
 ImageFilePyramidSource::ImageFilePyramidSource(absl::string_view filePath,
-                                               uint64_t frameWidth,
-                                               uint64_t frameHeight,
-                                               double HeightMm) :
-                              BaseFilePyramidSource<ImageFileFrame>(filePath) {
+uint64_t frameWidth, uint64_t frameHeight, double HeightMm) :
+BaseFilePyramidSource<ImageFileFrame>(filePath) {
   frameWidth_ = frameWidth;
   frameHeight_ = frameHeight;
   std::string filename = std::move(static_cast<std::string>(filePath));
