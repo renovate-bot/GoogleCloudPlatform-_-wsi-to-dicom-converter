@@ -20,7 +20,7 @@ checkFolder () {
   fi
 }
 
-wget https://raw.githubusercontent.com/cpplint/cpplint/refs/heads/develop/cpplint.py 2> /dev/null;
+wget https://raw.githubusercontent.com/cpplint/cpplint/refs/heads/develop/cpplint.py
 
 checkFolder ./src
 checkFolder ./tests
