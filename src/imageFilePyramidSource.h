@@ -17,6 +17,7 @@
 #include <absl/strings/string_view.h>
 #include <jpeglib.h>
 
+#include <cstdio>
 #include <memory>
 #include <string>
 #include <vector>
