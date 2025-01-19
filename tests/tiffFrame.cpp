@@ -15,12 +15,10 @@
 #include <gtest/gtest.h>
 #include <jpeglib.h>
 
-#include <cstdio>
-#include "tests/testUtils.h"
-
 #include "src/tiffDirectory.h"
 #include "src/tiffFile.h"
 #include "src/tiffFrame.h"
+#include "tests/testUtils.h"
 
 namespace wsiToDicomConverter {
 

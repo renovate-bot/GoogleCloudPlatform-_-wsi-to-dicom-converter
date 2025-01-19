@@ -17,7 +17,6 @@
 #include <dcmtk/dcmdata/dcdeftag.h>
 #include <openslide.h>
 
-#include <cstdio>
 #include <memory>
 #include <string>
 #include <utility>

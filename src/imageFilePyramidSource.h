@@ -15,9 +15,9 @@
 #ifndef SRC_IMAGEFILEPYRAMIDSOURCE_H_
 #define SRC_IMAGEFILEPYRAMIDSOURCE_H_
 #include <absl/strings/string_view.h>
+#include <stdio.h>
 #include <jpeglib.h>
 
-#include <cstdio>
 #include <memory>
 #include <string>
 #include <vector>

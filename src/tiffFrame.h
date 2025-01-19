@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <jpeglib.h>
 
-#include <cstdio>
 #include <memory>
 #include <string>
 #include <vector>

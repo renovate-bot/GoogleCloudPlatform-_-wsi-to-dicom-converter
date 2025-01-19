@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <jpeglib.h>
 
-#include <cstdio>
 #include <string>
 #include <memory>
 #include <vector>
