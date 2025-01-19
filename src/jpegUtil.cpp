@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #include <jpeglib.h>
+
+#include <cstddef>
 #include <csetjmp>
 #include <memory>
 #include <utility>
