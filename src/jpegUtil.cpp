@@ -15,6 +15,7 @@
 #include <stddef.h>
 #include <jpeglib.h>
 
+#include <cstdio>
 #include <csetjmp>
 #include <memory>
 #include <utility>
