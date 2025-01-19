@@ -275,7 +275,7 @@ bool loadframes): BaseFilePyramidSource<AbstractDicomFileFrame>(filePath) {
   bool DecodeLossyJPEG  = false;
   bool DecodeJPEG2K = false;
   DcmPixelSequence *pixelSeq = nullptr;
-  if (DcmXfer(xfer_).isEncapsulated()) {
+  if (DcmXfer(xfer_).isPixelDataCompressed()) {
     if (!pixelData->getEncapsulatedRepresentation(xfer_,
                                                 repParam,
                                                 pixelSeq).good() ||
