@@ -11,18 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#include "src/wsiToDcm.h"
-
 #include <absl/strings/string_view.h>
-#include <boost/algorithm/string.hpp>
-#include <boost/asio/post.hpp>
-#include <boost/asio/thread_pool.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/log/core.hpp>
-#include <boost/log/expressions.hpp>
-#include <boost/log/trivial.hpp>
-#include <boost/thread/thread.hpp>
 #include <dcmtk/dcmdata/dcuid.h>
 #include <math.h>
 
@@ -33,6 +22,15 @@
 #include <utility>
 #include <vector>
 
+#include "src/wsiToDcm.h"
+#include <boost/algorithm/string.hpp>
+#include <boost/asio/post.hpp>
+#include <boost/asio/thread_pool.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/log/core.hpp>
+#include <boost/log/expressions.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/thread/thread.hpp>
 #include "src/abstractDcmFile.h"
 #include "src/dcmFileDraft.h"
 #include "src/dcmFilePyramidSource.h"
@@ -145,7 +143,7 @@ void WsiToDcm::checkArguments() {
 }
 
 std::unique_ptr<DcmFilePyramidSource> WsiToDcm::initDicomIngest(
-                                 bool load_frame_data_from_dicom_using_dcmtk) {
+bool load_frame_data_from_dicom_using_dcmtk) {
   std::unique_ptr<DcmFilePyramidSource> dicomFile =
                 std::make_unique<DcmFilePyramidSource>(wsiRequest_->inputFile,
                                        load_frame_data_from_dicom_using_dcmtk);
@@ -289,7 +287,7 @@ int32_t WsiToDcm::getOpenslideLevelForDownsample(int64_t downsample) {
 }
 
 std::unique_ptr<SlideLevelDim> WsiToDcm::initAbstractDicomFileSourceLevelDim(
-                                              absl::string_view description) {
+absl::string_view description) {
   std::unique_ptr<SlideLevelDim> slideLevelDim;
   slideLevelDim = std::make_unique<SlideLevelDim>();
   slideLevelDim->levelToGet = 0;
@@ -310,7 +308,7 @@ std::unique_ptr<SlideLevelDim> WsiToDcm::initAbstractDicomFileSourceLevelDim(
 }
 
 std::unique_ptr<SlideLevelDim> WsiToDcm::getSlideLevelDim(int64_t downsample,
-                                            SlideLevelDim *priorLevel) {
+SlideLevelDim *priorLevel) {
   int32_t levelToGet;
   bool readOpenslide = false;
   std::string sourceDerivationDescription = "";
@@ -466,7 +464,7 @@ double  WsiToDcm::getOpenSlideDimensionMM(const char* openSlideProperty) {
 }
 
 double  WsiToDcm::getDimensionMM(const int64_t adjustedFirstLevelDim,
-                                 const double firstLevelMpp) {
+const double firstLevelMpp) {
   return static_cast<double>(adjustedFirstLevelDim) * firstLevelMpp / 1000;
 }
 
@@ -484,9 +482,8 @@ class LevelProcessOrder {
 };
 
 LevelProcessOrder::LevelProcessOrder(int32_t level, int64_t downsample,
-                                     bool readLevelFromTiff) :
-                                     level_(level), downsample_(downsample),
-                                     readLevelFromTiff_(readLevelFromTiff) {
+bool readLevelFromTiff) : level_(level), downsample_(downsample),
+readLevelFromTiff_(readLevelFromTiff) {
 }
 
 int32_t LevelProcessOrder::level() const {
@@ -502,8 +499,8 @@ bool LevelProcessOrder::readLevelFromTiff() const {
 }
 
 void WsiToDcm::getSlideDownSamplingLevels(
-                     std::vector<DownsamplingSlideState> *slideDownsampleState,
-                     SlideLevelDim *startPyramidCreationDim) {
+std::vector<DownsamplingSlideState> *slideDownsampleState,
+SlideLevelDim *startPyramidCreationDim) {
   int32_t levels;
   if (retile_) {
     double singleframe_downsample_width =
@@ -699,7 +696,7 @@ void WsiToDcm::getSlideDownSamplingLevels(
 }
 
 double abstractDicomDimensionMM(double imageDimMM, uint64_t imageDim,
-                                int64_t imageDimOffset) {
+int64_t imageDimOffset) {
   if (imageDimOffset <= 0) {
     return imageDimMM;
   }
@@ -709,9 +706,8 @@ double abstractDicomDimensionMM(double imageDimMM, uint64_t imageDim,
 
 
 int64_t sourceLevelPixelCoord(int64_t source_level_dim,
-                              int64_t downsample_level_dim,
-                              int64_t downsample_layer_coord,
-                              int64_t inital_offset) {
+int64_t downsample_level_dim, int64_t downsample_layer_coord,
+int64_t inital_offset) {
   return (source_level_dim * downsample_layer_coord / downsample_level_dim +
           inital_offset);
 }

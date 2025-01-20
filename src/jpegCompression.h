@@ -14,10 +14,10 @@
 
 #ifndef SRC_JPEGCOMPRESSION_H_
 #define SRC_JPEGCOMPRESSION_H_
-#include <boost/gil/extension/io/jpeg.hpp>
 #include <memory>
 #include <string>
 
+#include <boost/gil/extension/io/jpeg.hpp>
 #include "src/enums.h"
 #include "src/compressor.h"
 

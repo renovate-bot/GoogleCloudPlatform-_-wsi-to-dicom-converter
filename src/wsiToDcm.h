@@ -14,14 +14,13 @@
 
 #ifndef SRC_WSITODCM_H_
 #define SRC_WSITODCM_H_
-#include <boost/cstdint.hpp>
-#include <opencv2/opencv.hpp>
-
 #include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include <boost/cstdint.hpp>
+#include <opencv2/opencv.hpp>
 #include "src/openslideUtil.h"
 #include "src/enums.h"
 #include "src/tiffFile.h"

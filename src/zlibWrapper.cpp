@@ -10,18 +10,19 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific la
-#include <boost/log/trivial.hpp>
 #include <zlib.h>
 
+#include <memory>
 #include <string>
 #include <utility>
 
+#include <boost/log/trivial.hpp>
 #include "src/zlibWrapper.h"
 
 namespace wsiToDicomConverter {
 
 std::unique_ptr<uint8_t[]> get_compressed_bytes(const z_stream &zs,
-                                      const unsigned char * const outbuffer) {
+const unsigned char * const outbuffer) {
   if (zs.total_out == 0) {
       return NULL;
     } else {
@@ -33,8 +34,7 @@ std::unique_ptr<uint8_t[]> get_compressed_bytes(const z_stream &zs,
 }
 
 std::unique_ptr<uint8_t[]>  compress_memory(uint8_t *raw_bytes,
-                                          const int64_t frame_mem_size_bytes,
-                                          int64_t *raw_compressed_bytes_size) {
+const int64_t frame_mem_size_bytes, int64_t *raw_compressed_bytes_size) {
   /* ZLib compresses memory and returns compressed bytes.
 
   Args:
@@ -86,9 +86,8 @@ std::unique_ptr<uint8_t[]>  compress_memory(uint8_t *raw_bytes,
 }
 
 int64_t decompress_memory(uint8_t *compressed_bytes,
-                          const int64_t compressed_bytes_size,
-                          uint8_t* raw_memory,
-                          const int64_t raw_memory_size_bytes) {
+const int64_t compressed_bytes_size, uint8_t* raw_memory,
+const int64_t raw_memory_size_bytes) {
   /* ZLib decompresses memory.
 
   Args:

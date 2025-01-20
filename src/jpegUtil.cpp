@@ -11,13 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include <boost/log/trivial.hpp>
-
+#include <stdio.h>
+#include <stddef.h>
 #include <jpeglib.h>
+
+#include <cstdio>
 #include <csetjmp>
 #include <memory>
 #include <utility>
 
+#include <boost/log/trivial.hpp>
 #include "src/jpegUtil.h"
 
 namespace jpegUtil {
@@ -43,13 +46,10 @@ void jpegErrorExit(j_common_ptr cinfo) {
   longjmp(myerr->setjmp_buffer, 1);
 }
 
-bool decodeJpeg(const int64_t width,
-                const int64_t height,
-                const J_COLOR_SPACE colorSpace,
-                const uint8_t* rawBuffer,
-                const uint64_t rawBufferSize,
-                uint8_t *returnMemoryBuffer,
-                const int64_t returnMemoryBufferSize) {
+bool decodeJpeg(const int64_t width, const int64_t height,
+const J_COLOR_SPACE colorSpace, const uint8_t* rawBuffer,
+const uint64_t rawBufferSize, uint8_t *returnMemoryBuffer,
+const int64_t returnMemoryBufferSize) {
   if (returnMemoryBufferSize < 4 * width * height) {
     // size of memory buffer passed in is to small
     BOOST_LOG_TRIVIAL(error) <<  "Error insufficent memory hold "
@@ -118,8 +118,8 @@ bool decodeJpeg(const int64_t width,
 }
 
 bool canDecodeJpeg(const int64_t width, const int64_t height,
-                   const J_COLOR_SPACE colorSpace,
-                   const uint8_t* rawBuffer, const uint64_t rawBufferSize) {
+const J_COLOR_SPACE colorSpace, const uint8_t* rawBuffer,
+const uint64_t rawBufferSize) {
   const uint64_t size = width * height * 4;
   return decodeJpeg(width, height, colorSpace, rawBuffer, rawBufferSize,
                     nullptr, size);

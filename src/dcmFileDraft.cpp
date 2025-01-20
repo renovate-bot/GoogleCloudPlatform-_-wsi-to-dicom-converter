@@ -11,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#include "src/dcmFileDraft.h"
 #include <absl/strings/string_view.h>
 #include <dcmtk/dcmdata/dcdeftag.h>
 #include <dcmtk/dcmdata/dcdict.h>
@@ -25,27 +23,32 @@
 #include <dcmtk/dcmdata/libi2d/i2d.h>
 #include <dcmtk/dcmdata/libi2d/i2doutpl.h>
 #include <dcmtk/dcmdata/libi2d/i2dplsc.h>
+
+#include <ctime>
+#include <iomanip>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include <boost/chrono.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/thread/thread.hpp>
-#include <ctime>
-#include <iomanip>
-#include <string>
-#include <utility>
-#include <vector>
+#include "src/dcmFileDraft.h"
 #include "src/dcmtkUtils.h"
+
 
 namespace wsiToDicomConverter {
 DcmFileDraft::DcmFileDraft(
-    std::vector<std::unique_ptr<Frame>> framesData,
-    absl::string_view outputFileMask, int64_t imageWidth, int64_t imageHeight,
-    int64_t instanceNumber, absl::string_view studyId,
-    absl::string_view seriesId, absl::string_view imageName,
-    DCM_Compression compression, bool tiled, DcmTags* additionalTags,
-    double firstLevelWidthMm, double firstLevelHeightMm, int64_t downsample,
-    const std::vector<std::unique_ptr<AbstractDcmFile>> * prior_frame_batches,
-    absl::string_view sourceImageDescription, bool saveDicomInstanceToDisk) {
+std::vector<std::unique_ptr<Frame>> framesData,
+absl::string_view outputFileMask, int64_t imageWidth, int64_t imageHeight,
+int64_t instanceNumber, absl::string_view studyId, absl::string_view seriesId,
+absl::string_view imageName, DCM_Compression compression, bool tiled,
+DcmTags* additionalTags, double firstLevelWidthMm, double firstLevelHeightMm,
+int64_t downsample,
+const std::vector<std::unique_ptr<AbstractDcmFile>> * prior_frame_batches,
+absl::string_view sourceImageDescription, bool saveDicomInstanceToDisk) {
   saveDicomInstanceToDisk_ = saveDicomInstanceToDisk;
   framesData_ = std::move(framesData);
   outputFileMask_ = std::move(static_cast<std::string>(outputFileMask));

@@ -14,13 +14,14 @@
 
 #method to check folder
 checkFolder () {
-  python ./cpplint.py --root ./ ./$1/* 
+  python3 ./cpplint.py --root ./ ./$1/* 
   if [ $? -eq 1 ]; then
     exit 1;
   fi
 }
-
-wget https://raw.githubusercontent.com/google/styleguide/gh-pages/cpplint/cpplint.py 2> /dev/null;
+apt-get update
+apt-get install -y wget
+wget https://raw.githubusercontent.com/cpplint/cpplint/refs/heads/develop/cpplint.py
 
 checkFolder ./src
 checkFolder ./tests

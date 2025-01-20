@@ -14,10 +14,11 @@
 
 #ifndef SRC_OPENSLIDEUTIL_H_
 #define SRC_OPENSLIDEUTIL_H_
-
 #include <openslide.h>
 
+#include <memory>
 #include <string>
+
 
 namespace wsiToDicomConverter {
 

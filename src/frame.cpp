@@ -11,14 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include <boost/log/trivial.hpp>
-#include <boost/thread.hpp>
 #include <dcmtk/dcmdata/dcpxitem.h>
 #include <dcmtk/dcmdata/dcdeftag.h>
 
+#include <memory>
 #include <utility>
 #include <string>
 
+#include <boost/log/trivial.hpp>
+#include <boost/thread.hpp>
 #include "src/enums.h"
 #include "src/frame.h"
 #include "src/jpeg2000Compression.h"
@@ -29,13 +30,10 @@
 namespace wsiToDicomConverter {
 
 Frame::Frame(int64_t locationX, int64_t locationY, int64_t frameWidth,
-             int64_t frameHeight, DCM_Compression compression,
-             int quality, JpegSubsampling subsampling, bool storeRawBytes) :
-               locationX_(locationX),
-               locationY_(locationY),
-               frameWidth_(frameWidth),
-               frameHeight_(frameHeight),
-               storeRawBytes_(storeRawBytes) {
+int64_t frameHeight, DCM_Compression compression, int quality,
+JpegSubsampling subsampling, bool storeRawBytes) : locationX_(locationX),
+locationY_(locationY), frameWidth_(frameWidth), frameHeight_(frameHeight),
+storeRawBytes_(storeRawBytes) {
     switch (compression) {
         case JPEG:
             compressor_ = std::make_unique<JpegCompression>(quality,
@@ -87,7 +85,7 @@ void Frame::decReadCounter() {
     if (readCounter_ <= 0) {
       clearRawABGRMem();
     }
-  }
+}
 
 int64_t Frame::rawABGRFrameBytes(uint8_t *rawMemory, int64_t memorySize) {
   int64_t memSize =  decompress_memory(rawCompressedBytes_.get(),
@@ -123,7 +121,7 @@ uint8_t *Frame::dicomFrameBytes() {
 }
 
 void Frame::setDicomFrameBytes(std::unique_ptr<uint8_t[]> dcmdata,
-                                               uint64_t size) {
+uint64_t size) {
   size_ = size;
   if (compressor_->method() == RAW) {
     data_ = std::move(dcmdata);

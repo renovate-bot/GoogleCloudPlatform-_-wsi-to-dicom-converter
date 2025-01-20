@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #include <absl/strings/string_view.h>
-#include <boost/log/trivial.hpp>
 #include <memory>
 #include <string>
 #include <utility>
 
+#include <boost/log/trivial.hpp>
 #include "src/openslideUtil.h"
 #include "src/tiffFile.h"
 
@@ -24,7 +24,7 @@
 namespace wsiToDicomConverter {
 
 TiffFile::TiffFile(absl::string_view path, const int32_t dirIndex) :
-  tiffFilePath_(path), currentDirectoryIndex_(dirIndex) {
+tiffFilePath_(path), currentDirectoryIndex_(dirIndex) {
   initalized_ = false;
   tileReadBufSize_  = 0;
   openslide_level_ = 0;
@@ -44,7 +44,7 @@ TiffFile::TiffFile(absl::string_view path, const int32_t dirIndex) :
 }
 
 TiffFile::TiffFile(const TiffFile &tf, const int32_t dirIndex) :
-    tiffFilePath_(tf.path()), currentDirectoryIndex_(dirIndex) {
+tiffFilePath_(tf.path()), currentDirectoryIndex_(dirIndex) {
     initalized_ = false;
     tileReadBufSize_  = 0;
     openslide_level_ = 0;
@@ -139,8 +139,7 @@ bool TiffFile::hasExtractablePyramidImages() const {
 }
 
 int32_t TiffFile::getDirectoryIndexMatchingImageDimensions(uint32_t width,
-                                                           uint32_t height,
-                                        bool isExtractablePyramidImage) const {
+uint32_t height, bool isExtractablePyramidImage) const {
   for (int32_t idx = 0; idx < tiffDir_.size(); ++idx) {
     if (!isExtractablePyramidImage ||
         tiffDir_[idx]->isExtractablePyramidImage()) {

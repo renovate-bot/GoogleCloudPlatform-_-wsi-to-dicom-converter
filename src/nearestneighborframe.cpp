@@ -13,14 +13,14 @@
 // limitations under the License.
 #include <dcmtk/dcmdata/libi2d/i2dimgs.h>
 
+#include <memory>
+#include <utility>
+
 #include <boost/gil/extension/numeric/affine.hpp>
 #include <boost/gil/extension/numeric/resample.hpp>
 #include <boost/gil/extension/numeric/sampler.hpp>
 #include <boost/gil/typedefs.hpp>
 #include <boost/log/trivial.hpp>
-
-#include <utility>
-
 #include "src/dicom_file_region_reader.h"
 #include "src/jpegCompression.h"
 #include "src/nearestneighborframe.h"
@@ -30,18 +30,13 @@
 namespace wsiToDicomConverter {
 
 NearestNeighborFrame::NearestNeighborFrame(
-    OpenSlidePtr *osptr, int64_t locationX, int64_t locationY, int64_t level,
-    int64_t frameWidthDownsampled, int64_t frameHeightDownsampled,
-    double multiplicator, int64_t frameWidth, int64_t frameHeight,
-    DCM_Compression compression, int quality, JpegSubsampling sampling,
-    bool storeRawBytes,
-    DICOMFileFrameRegionReader *frame_region_reader): Frame(locationX,
-                                                            locationY,
-                                                            frameWidth,
-                                                             frameHeight,
-                                                        compression, quality,
-                                                        sampling,
-                                                        storeRawBytes) {
+OpenSlidePtr *osptr, int64_t locationX, int64_t locationY, int64_t level,
+int64_t frameWidthDownsampled, int64_t frameHeightDownsampled,
+double multiplicator, int64_t frameWidth, int64_t frameHeight,
+DCM_Compression compression, int quality, JpegSubsampling sampling,
+bool storeRawBytes, DICOMFileFrameRegionReader *frame_region_reader): Frame(
+locationX, locationY, frameWidth, frameHeight, compression, quality, sampling,
+storeRawBytes) {
   osptr_ = osptr;
   level_ = level;
   frameWidthDownsampled_ = frameWidthDownsampled;

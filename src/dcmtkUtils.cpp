@@ -26,23 +26,25 @@
 #include <dcmtk/dcmdata/libi2d/i2d.h>
 #include <dcmtk/dcmdata/libi2d/i2doutpl.h>
 #include <dcmtk/dcmdata/libi2d/i2dplsc.h>
-#include <boost/chrono.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/log/trivial.hpp>
-#include <boost/thread/thread.hpp>
+
+#include <cstdio>
 #include <ctime>
 #include <iomanip>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include <boost/chrono.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/log/trivial.hpp>
+#include <boost/thread/thread.hpp>
+
 namespace wsiToDicomConverter {
 
 inline OFCondition generateFramePositionMetadata(DcmDataset* resultObject,
-                                                 uint32_t numberOfFrames,
-                                                 uint32_t rowSize, uint32_t row,
-                                                 uint32_t column, uint32_t x,
-                                                 uint32_t y) {
+uint32_t numberOfFrames, uint32_t rowSize, uint32_t row, uint32_t column,
+uint32_t x, uint32_t y) {
   std::unique_ptr<DcmSequenceOfItems> PerFrameFunctionalGroupsSequence =
       std::make_unique<DcmSequenceOfItems>(
           DCM_PerFrameFunctionalGroupsSequence);
@@ -79,8 +81,7 @@ inline OFCondition generateFramePositionMetadata(DcmDataset* resultObject,
 }
 
 inline OFCondition generateSharedFunctionalGroupsSequence(
-    DcmDataset* resultObject, double pixelSizeWidthMm,
-    double pixelSizeHeightMm) {
+DcmDataset* resultObject, double pixelSizeWidthMm, double pixelSizeHeightMm) {
   if (pixelSizeWidthMm <= 0) {
     pixelSizeWidthMm = 0.1;
   }
@@ -151,8 +152,7 @@ std::string currentDate() { return formatTime("%Y%m%d"); }
 std::string currentTime() { return formatTime("%OH%OM%OS"); }
 
 OFCondition insertPixelMetadata(DcmDataset* dataset,
-                                const DcmtkImgDataInfo& imgInfo,
-                                uint32_t numberOfFrames) {
+const DcmtkImgDataInfo& imgInfo, uint32_t numberOfFrames) {
   OFCondition cond =
       dataset->putAndInsertUint16(DCM_SamplesPerPixel, imgInfo.samplesPerPixel);
   if (cond.bad()) return cond;
@@ -213,8 +213,7 @@ OFCondition insertPixelMetadata(DcmDataset* dataset,
 }
 
 OFCondition generateDcmDataset(I2DOutputPlug* outPlug, DcmDataset* resultDset,
-                               const DcmtkImgDataInfo& imgInfo,
-                               uint32_t numberOfFrames) {
+const DcmtkImgDataInfo& imgInfo, uint32_t numberOfFrames) {
   if (!outPlug) return EC_IllegalParameter;
 
   OFCondition cond = insertPixelMetadata(resultDset, imgInfo, numberOfFrames);
@@ -229,16 +228,16 @@ OFCondition generateDcmDataset(I2DOutputPlug* outPlug, DcmDataset* resultDset,
 }
 
 OFCondition DcmtkUtils::populateDataSet(
-    const int64_t imageHeight, const int64_t imageWidth,
-    const uint32_t rowSize, absl::string_view studyId,
-    absl::string_view seriesId, absl::string_view imageName,
-    std::unique_ptr<DcmPixelData> pixelData,
-    const DcmtkImgDataInfo& imgInfo, const uint32_t numberOfFrames,
-    const uint32_t row, const uint32_t column, const int32_t instanceNumber,
-    const int32_t downsample, const int batchNumber, const uint32_t offset,
-    const uint32_t totalNumberOfFrames, const bool tiled,
-    DcmTags* additionalTags, const double firstLevelWidthMm,
-    const double firstLevelHeightMm, DcmDataset* dataSet) {
+const int64_t imageHeight, const int64_t imageWidth,
+const uint32_t rowSize, absl::string_view studyId,
+absl::string_view seriesId, absl::string_view imageName,
+std::unique_ptr<DcmPixelData> pixelData,
+const DcmtkImgDataInfo& imgInfo, const uint32_t numberOfFrames,
+const uint32_t row, const uint32_t column, const int32_t instanceNumber,
+const int32_t downsample, const int batchNumber, const uint32_t offset,
+const uint32_t totalNumberOfFrames, const bool tiled,
+DcmTags* additionalTags, const double firstLevelWidthMm,
+const double firstLevelHeightMm, DcmDataset* dataSet) {
   std::unique_ptr<I2DOutputPlug> outPlug;
 
   OFString pixDataFile, outputFile;
@@ -335,8 +334,7 @@ OFCondition DcmtkUtils::insertStaticTags(DcmDataset* dataSet, int downsample) {
 }
 
 OFCondition DcmtkUtils::insertIds(absl::string_view studyId,
-                                  absl::string_view seriesId,
-                                  DcmDataset* dataSet) {
+absl::string_view seriesId, DcmDataset* dataSet) {
   char instanceUidGenerated[100];
   dcmGenerateUniqueIdentifier(instanceUidGenerated, SITE_INSTANCE_UID_ROOT);
   OFCondition cond = dataSet->putAndInsertOFStringArray(DCM_SOPInstanceUID,
@@ -354,11 +352,9 @@ OFCondition DcmtkUtils::insertIds(absl::string_view studyId,
 }
 
 OFCondition DcmtkUtils::insertBaseImageTags(absl::string_view imageName,
-                                            const int64_t imageHeight,
-                                            const int64_t imageWidth,
-                                            const double firstLevelWidthMm,
-                                            const double firstLevelHeightMm,
-                                            DcmDataset* dataSet) {
+const int64_t imageHeight, const int64_t imageWidth,
+const double firstLevelWidthMm, const double firstLevelHeightMm,
+DcmDataset* dataSet) {
   std::string imageName_str = std::move(static_cast<std::string>(imageName));
   OFCondition cond;
   if (imageName_str.length() > 0) {
@@ -380,11 +376,11 @@ OFCondition DcmtkUtils::insertBaseImageTags(absl::string_view imageName,
 }
 
 OFCondition DcmtkUtils::insertMultiFrameTags(
-    const DcmtkImgDataInfo& imgInfo, const uint32_t numberOfFrames,
-    const uint32_t rowSize, const uint32_t row, const uint32_t column,
-    const int instanceNumber, const int batchNumber, const uint32_t offset,
-    const uint32_t totalNumberOfFrames, const bool tiled,
-    absl::string_view seriesId, DcmDataset* dataSet) {
+const DcmtkImgDataInfo& imgInfo, const uint32_t numberOfFrames,
+const uint32_t rowSize, const uint32_t row, const uint32_t column,
+const int instanceNumber, const int batchNumber, const uint32_t offset,
+const uint32_t totalNumberOfFrames, const bool tiled,
+absl::string_view seriesId, DcmDataset* dataSet) {
   unsigned int concatenationTotalNumber;
   std::string seriesId_str = std::move(static_cast<std::string>(seriesId));
 
@@ -431,13 +427,13 @@ OFCondition DcmtkUtils::insertMultiFrameTags(
 }
 
 OFCondition DcmtkUtils::startConversion(
-    int64_t imageHeight, int64_t imageWidth, uint32_t rowSize,
-    absl::string_view studyId, absl::string_view seriesId,
-    absl::string_view imageName, std::unique_ptr<DcmPixelData> pixelData,
-    const DcmtkImgDataInfo& imgInfo, uint32_t numberOfFrames, uint32_t row,
-    uint32_t column, const int32_t instanceNumber, const int32_t downsample,
-    int batchNumber, uint32_t offset, uint32_t totalNumberOfFrames,
-    bool tiled, DcmOutputStream* outStream) {
+int64_t imageHeight, int64_t imageWidth, uint32_t rowSize,
+absl::string_view studyId, absl::string_view seriesId,
+absl::string_view imageName, std::unique_ptr<DcmPixelData> pixelData,
+const DcmtkImgDataInfo& imgInfo, uint32_t numberOfFrames, uint32_t row,
+uint32_t column, const int32_t instanceNumber, const int32_t downsample,
+int batchNumber, uint32_t offset, uint32_t totalNumberOfFrames, bool tiled,
+DcmOutputStream* outStream) {
   return startConversion(imageHeight, imageWidth, rowSize, studyId, seriesId,
                          imageName, std::move(pixelData), imgInfo,
                          numberOfFrames, row, column, instanceNumber,
@@ -446,14 +442,14 @@ OFCondition DcmtkUtils::startConversion(
 }
 
 OFCondition DcmtkUtils::startConversion(
-    int64_t imageHeight, int64_t imageWidth, uint32_t rowSize,
-    absl::string_view studyId, absl::string_view seriesId,
-    absl::string_view imageName, std::unique_ptr<DcmPixelData> pixelData,
-    const DcmtkImgDataInfo& imgInfo, uint32_t numberOfFrames, uint32_t row,
-    uint32_t column, const int32_t instanceNumber, const int32_t downsample,
-    int batchNumber, unsigned int offset, uint32_t totalNumberOfFrames,
-    bool tiled, DcmTags* additionalTags, double firstLevelWidthMm,
-    double firstLevelHeightMm, DcmOutputStream* outStream) {
+int64_t imageHeight, int64_t imageWidth, uint32_t rowSize,
+absl::string_view studyId, absl::string_view seriesId,
+absl::string_view imageName, std::unique_ptr<DcmPixelData> pixelData,
+const DcmtkImgDataInfo& imgInfo, uint32_t numberOfFrames, uint32_t row,
+uint32_t column, const int32_t instanceNumber, const int32_t downsample,
+int batchNumber, unsigned int offset, uint32_t totalNumberOfFrames,
+bool tiled, DcmTags* additionalTags, double firstLevelWidthMm,
+double firstLevelHeightMm, DcmOutputStream* outStream) {
   E_GrpLenEncoding grpLenEncoding = EGL_recalcGL;
   E_EncodingType encodingType = EET_ExplicitLength;
   E_PaddingEncoding paddingEncoding = EPD_noChange;

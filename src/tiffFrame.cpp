@@ -11,15 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+#include <stdio.h>
 #include <arpa/inet.h>
-#include <boost/log/trivial.hpp>
 #include <jpeglib.h>
 #include <dcmtk/dcmdata/dcdeftag.h>
 #include <openslide.h>
 
+#include <memory>
 #include <string>
 #include <utility>
 
+#include <boost/log/trivial.hpp>
 #include "src/jpegUtil.h"
 #include "src/tiffDirectory.h"
 #include "src/tiffFrame.h"
@@ -56,7 +58,7 @@ void setShortBigEndian(uint8_t* byteArray, int firstbyte, uint16_t val) {
 }
 
 void writeMem(uint8_t * writeBuffer, const uint8_t *data, const uint64_t size,
-              uint64_t *bytesWritten) {
+uint64_t *bytesWritten) {
   memcpy(&(writeBuffer[*bytesWritten]), data, size);
   *bytesWritten += size;
 }
@@ -144,7 +146,7 @@ std::unique_ptr<uint8_t[]> constructJpeg(TiffTile *tile, uint64_t *size) {
 }
 
 TiffFrameJpgBytes::TiffFrameJpgBytes(TiffFrame * framePtr) :
-                                                          framePtr_(framePtr) {
+framePtr_(framePtr) {
   const uint64_t tileIndex = framePtr_->tileIndex();
   tile_ = std::move(framePtr_->tiffFile()->tile(tileIndex));
   if (hasJpegTable()) {
@@ -193,13 +195,13 @@ bool TiffFrameJpgBytes::hasJpegTable() const {
 }
 
 int64_t conFrameLocationX(const TiffFile *tiffFile, const uint64_t level,
-                          const uint64_t tileIndex) {
+const uint64_t tileIndex) {
   const TiffDirectory *dir = tiffFile->directory(level);
   return tileIndex %  dir->tilesPerRow();
 }
 
 int64_t conFrameLocationY(const TiffFile *tiffFile, const uint64_t level,
-                          const uint64_t tileIndex) {
+const uint64_t tileIndex) {
   const TiffDirectory *dir = tiffFile->directory(level);
   return tileIndex /  dir->tilesPerRow();
 }
@@ -213,20 +215,19 @@ int64_t conFrameHeight(const TiffFile *tiffFile, const uint64_t level) {
 }
 
 uint64_t frameIndexFromLocation(const TiffFile *tiffFile, const uint64_t level,
-                                const int64_t xLoc, const int64_t yLoc) {
+const int64_t xLoc, const int64_t yLoc) {
   const TiffDirectory *dir = tiffFile->directory(level);
   return  ((yLoc / dir->tileHeight()) * dir->tilesPerRow()) +
            (xLoc /  dir->tileWidth());
 }
 
 TiffFrame::TiffFrame(
-    TiffFile *tiffFile, const uint64_t tileIndex, bool storeRawBytes):
-    Frame(conFrameLocationX(tiffFile, tiffFile->directoryLevel(), tileIndex),
-          conFrameLocationY(tiffFile, tiffFile->directoryLevel(), tileIndex),
-          conFrameWidth(tiffFile, tiffFile->directoryLevel()),
-          conFrameHeight(tiffFile, tiffFile->directoryLevel()), NONE, -1,
-          subsample_420, storeRawBytes),
-          tileIndex_(tileIndex) {
+TiffFile *tiffFile, const uint64_t tileIndex, bool storeRawBytes):
+Frame(conFrameLocationX(tiffFile, tiffFile->directoryLevel(), tileIndex),
+conFrameLocationY(tiffFile, tiffFile->directoryLevel(), tileIndex),
+conFrameWidth(tiffFile, tiffFile->directoryLevel()),
+conFrameHeight(tiffFile, tiffFile->directoryLevel()), NONE, -1, subsample_420,
+storeRawBytes), tileIndex_(tileIndex) {
   tiffFile_ = tiffFile;
 }
 
@@ -274,7 +275,7 @@ void TiffFrame::incSourceFrameReadCounter() {
 }
 
 int64_t TiffFrame::rawABGRFrameBytes(uint8_t *rawMemory,
-                                      int64_t memorySize) {
+int64_t memorySize) {
   // tiff frame data in native format is jpeg encoded.
   // uncompress and return # of bytes read.
   // return 0 if error occures.
@@ -334,7 +335,7 @@ int64_t TiffFrame::rawABGRFrameBytes(uint8_t *rawMemory,
 }
 
 void TiffFrame::setDicomFrameBytes(std::unique_ptr<uint8_t[]> dcmdata,
-                                                          uint64_t size) {
+uint64_t size) {
   size_ = size;
   // Store a copy of the data for downsampling.
   rawCompressedBytesSize_ = size;

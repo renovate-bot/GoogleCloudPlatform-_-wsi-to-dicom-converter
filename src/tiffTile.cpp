@@ -19,11 +19,9 @@
 namespace wsiToDicomConverter {
 
 TiffTile::TiffTile(const TiffDirectory* tiffDirectory,
-                  const uint64_t tileIndex,
-                  std::unique_ptr<uint8_t[]> rawBuffer,
-                  const uint64_t bufferSize) :
-                  tiffDirectory_(tiffDirectory), tileIndex_(tileIndex),
-                  rawBufferSize_(bufferSize) {
+const uint64_t tileIndex, std::unique_ptr<uint8_t[]> rawBuffer,
+const uint64_t bufferSize) : tiffDirectory_(tiffDirectory),
+tileIndex_(tileIndex), rawBufferSize_(bufferSize) {
   rawBuffer_ = std::move(rawBuffer);
 }
 
