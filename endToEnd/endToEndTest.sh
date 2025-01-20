@@ -29,10 +29,16 @@ compare () {
 }
 
 
-if [ "$1" !=  "SKIP_BUILD_ENVIRONMENT" ]
+if [ "$1" != "SKIP_BUILD_ENVIRONMENT" ]
 then
   #building binaries
   bash ./cloud_build/debianBuild.sh
+fi
+
+if [ ! -x pip ]; then
+  apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip
 fi
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/local/lib/x86_64-linux-gnu:/usr/local/lib/aarch64-linux-gnu

@@ -24,14 +24,21 @@
 # 9: install jsoncpp
 # 10: build
 
+set -ex
+
 #1
 apt-get update 
 apt-get upgrade -y
-apt-get install -y \
+apt-get install -y --no-install-recommends \
+    ca-certificates \
     apt-utils \
     wget \
-    build-essential \
+    dpkg-dev \
     cmake \
+    make \
+    meson \
+    ninja-build \
+    g++ \
     unzip \
     libgtest-dev \
     libxml2-dev \
@@ -46,7 +53,7 @@ apt-get install -y \
     libglib2.0-dev      
 #2
 # installing in /workspace
-apt-get install -y nasm
+apt-get install -y --no-install-recommends nasm
 wget -O libjpeg_turbo.zip https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/3.1.0.zip > /dev/null
 unzip libjpeg_turbo.zip > /dev/null
 rm libjpeg_turbo.zip
@@ -59,7 +66,7 @@ cd ..
 cd ..
 rm -rf libjpeg-turbo-3.1.0
 #3
-apt-get install -y liblcms2-dev libzstd-dev libwebp-dev
+apt-get install -y --no-install-recommends liblcms2-dev libzstd-dev libwebp-dev
 wget -O v2.5.3.zip  https://github.com/uclouvain/openjpeg/archive/refs/tags/v2.5.3.zip > /dev/null
 unzip v2.5.3.zip > /dev/null
 mkdir -p ./openjpeg-2.5.3/build
@@ -119,9 +126,6 @@ cd boost_1_87_0
 cd ..
 rm -rf boost_1_87_0
 # 8
-apt-get update
-apt-get install -y python3-full pip libjpeg-dev ninja-build
-pip3 install --break-system-packages meson
 wget -O openslide-4.0.0.tar.gz https://github.com/openslide/openslide/archive/refs/tags/v4.0.0.tar.gz > /dev/null
 tar xvzf openslide-4.0.0.tar.gz > /dev/null
 rm openslide-4.0.0.tar.gz
